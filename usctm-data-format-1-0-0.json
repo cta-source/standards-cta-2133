@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "CTA2133schema.json",
+  "$comment": "CTA2133 Schema Version 1.0.0",
+  "title": "CTA2133 Test Result Definitions",
+  "description": "Test Results for USCTM",
+  "required": [
+    "header",
+    "label_tbs",
+    "assessment"
+  ],
+  "properties": {
+    "header": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "1.0.0"
+        },
+        "title": {
+          "type": "string",
+          "$comment": "From ISO/IEC 17025 7.8.2.1: a title (e.g. “Test Report”, “Calibration Certificate” or “Report of Sampling”)",
+          "$ref": "#/$defs/stringType"
+        },
+        "report_identifier": {
+          "type": "string",
+          "$ref": "#/$defs/stringType",
+          "$comment": "identifier for this report, e.g., an alphanumeric string or report ID that is non-duplicated and, when combined with lab_name, effectively unique (see also ISO 17025 section 7.8.2.1(d))."
+        },
+        "customer": {
+          "type": "object",
+          "$comment": "an object that identifies the customer (see also ISO 17025 section 7.8.2.1(e))",
+          "properties": {
+            "cust_name": {
+              "type": "string",
+              "$ref": "#/$defs/stringType",
+              "$comment": "the name of the customer"
+            },
+            "cust_contact": {
+              "type": "string",
+              "$ref": "#/$defs/stringType",
+              "$comment": "contact information for the customer"
+            }
+          }
+        },
+        "item_received": {
+          "type": "string",
+          "$ref": "#/$defs/dateType",
+          "$comment": "the date of receipt of the test item (see also ISO 17025 section 7.8.2.1(h))"
+        },
+        "test_date": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "$ref": "#/$defs/dateType",
+            "$comment": "an array of dates when performance of the laboratory activity described in this file were performed. Detailed date and time information for each test is available in the assessments object. (See also ISO 17025 section 7.8.2.1(i))"
+          }
+        },
+        "date_issued": {
+          "type": "string",
+          "$ref": "#/$defs/dateType",
+          "$comment": "the date when this report was issued according to the lab’s release procedures (e.g., signed by the authorizing individual, sent to the customer, etc.) (see also ISO 17025 section 7.8.2.1(j))"
+        },
+        "authorization": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "$ref": "#/$defs/stringType",
+            "$comment": "an array of text strings identifying the individual(s) authorizing this report (see also ISO 17025 section 7.8.2.1(o))"
+          } 
+        },
+        "created": {
+          "type": "string",
+          "$comment": "datetime of when this file was originally created",
+          "$ref": "#/$defs/dateTimeType"
+        },
+        "modified": {
+          "type": "string",
+          "$comment": "datetime of when this version of this file was last modified (including creation)",
+          "$ref": "#/$defs/dateTimeType"
+        },
+        "results_statement": {
+          "type": "string",
+          "$ref": "#/$defs/stringType",
+          "$comment": "a statement by the lab that that the results in this report relate only to the items tested (see also ISO 17025 Sec. 7.8.2.1(l))"
+        },
+        "overall_test_result": {
+          "$comment": "Note: this field is set by the CLA only, and presense of this field is optional (eg when produced by a lab)",
+          "type": "string",
+          "oneOf": [
+            { "const": "pass" },
+            { "const": "fail" }
+          ]
+        },
+        "authors": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "name": {
+                "type": "string",
+                "$ref": "#/$defs/stringType",
+                "$comment": "name of the author"
+              },
+              "org": {
+                "type": "string",
+                "$ref": "#/$defs/stringType",
+                "$comment": "the name of the organization the author belongs to"
+              },
+              "test_software": {
+                "type": "object",
+                  "properties": {
+                    "software_name": {
+                    "type": "string",
+                    "$ref": "#/$defs/stringType",
+                    "$comment": "the name of the software used in testing"
+                  },
+                  "software_version": {
+                    "type": "string",
+                    "$ref": "#/$defs/stringType",
+                    "$comment": "the version of the software used in testing"
+                  } 
+                }
+              }
+            }
+          }
+        },
+        "labs": {
+          "$comment": "is an array of fields identifying the responsible laboratory and the location(s) where the work was done (see also ISO 17025 section 7.8.2.1(b) and (c))",
+          "type": "array",
+          "items": {
+            "properties": {
+              "lab_name": {
+                "type": "string",
+                "$ref": "#/$defs/stringType",
+                "$comment": "name of the responsible laboratory"
+              },
+              "lab_address": {
+                "type": "string",
+                "$ref": "#/$defs/stringType",
+                "$comment": "primary address of the responsible laboratory"
+              },
+              "location": {
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "provider": {
+                      "type": "string",
+                      "$ref": "#/$defs/stringType",
+                      "$comment": "the name of the service provider, either the same as lab_name or an identifier of an external provider (see also ISO 17025 section 7.8.2.1(p))"
+                    },
+                    "facility": {
+                      "type": "string",
+                      "$ref": "#/$defs/stringType",
+                      "$comment": "string identifying the name and location the facility that performed the assessments"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "device_name": {
+          "$comment": "the manufacturer's model name(s) of the tested device.",
+          "type": "string",
+          "$ref": "#/$defs/stringType"
+        },
+        "device_version": {
+          "$comment": "the manufacturer's version(s) of the tested device.",
+          "type": "string",
+          "$ref": "#/$defs/stringType"
+        },
+        "device_desc": {
+          "type": "string",
+          "$comment": "an explanation of the device, its application and components (device, mobile app, backend services, etc.) (see also 7.8.2.1(g))",
+          "$ref": "#/$defs/stringType"
+        },
+        "device_identical": {
+          "$comment": "equivalent models that meet the criteria for ‘identical’ in the program and will share eventual certification",
+          "type": "array",
+          "items": {
+            "properties": {
+              "eq_model": {
+                "$comment": "one or more model number(s) that meets the criteria for ‘identical’ in the program, or similarly a partial model number for a family of products with identified locations for additional characters that identify individual models.",
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "$ref": "#/$defs/stringType"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "$ref": "#/$defs/stringType"
+                    }
+                  }
+                ]
+              },
+              "eq_justification": {
+                "$comment": "a justification for why this (these) model(s) should be considered identical to the tested model",
+                "type": "string",
+                "$ref": "#/$defs/stringType"
+              }
+            }
+          }
+        },
+        "scheme_name": {
+          "$comment": "the name of the Scheme assigned by the Scheme owner for evaluation of compliance",
+          "type": "string",
+          "$ref": "#/$defs/stringType"
+        },
+        "scheme_vers": {
+          "$comment": "the version of the Scheme assigned by the Scheme owner for evaluation of compliance",
+          "type": "string",
+          "$ref": "#/$defs/stringType"
+        }
+      },
+      "$ref": "x590schema.json"
+    }
+  },
+  "label_tbs": {
+    "type": "object",
+    "properties": {
+      "label": {
+        "$ref": "https://cdn.cta.tech/cta-2120/usctm-schema-1-0-0.json"
+      }
+    },
+    "$ref": "x590schema.json"
+  },
+  "assessment": {
+    "type": "array",
+    "items": {
+      "type": "object",
+      "properties": {
+        "e_description": {
+          "type": "string",
+          "$ref": "#/$defs/stringType",
+          "$comment": "human-readable description of evidence file"
+        },
+        "test_evidence": {
+          "type": "array",
+          "items": {
+            "evidence_file": {
+              "$comment": "values might be relative filepaths to evidence files (see test_name)",
+              "$ref": "#/$defs/stringType"
+            },
+            "hash_value": {
+              "$comment": "SHA256 hash of the evidence file",
+              "$ref": "#/$defs/stringType"
+            }
+          }
+        },
+        "test_name": {
+          "$comment": "a unique identifier of the specific test in the scheme, e.g., T100",
+          "$ref": "#/$defs/stringType"
+        },
+        "test_comment": {
+          "type": "string",
+          "$comment": "test_comment, free-form textual information about this test",
+          "$ref": "#/$defs/stringType"
+        },
+        "test_result": {
+          "$comment": "Values from the list below are subject to external requirements or prohibitions, particualrly, granted_waiver or seeking_waiver might not be used by the US CTM.",
+          "type": "string",
+          "oneOf": [
+            { "const": "pass" },
+            { "const": "fail" },
+            { "const": "seeking_waiver" },
+            { "const": "granted_waiver" },
+            { "const": "warn" },
+            { "const": "error" },
+            { "const": "inconclusive" },
+            { "const": "not_implemented" },
+            { "const": "not_applicable" },
+            { "const": "eval_by_cla" }
+          ]
+        },
+        "test_time": {
+          "type": "string",
+          "$ref": "#/$defs/dateTimeType",
+          "$comment": "date-time of when this test was run"
+        },
+        "test_software": {
+          "type": "array",
+          "items": {
+            "$comment": "software name and version used to run test(s)",
+            "type": "string",
+            "$ref": "#/$defs/stringType"
+          }
+        },
+        "test_req": {
+          "type": "array",
+          "$comment": "list of requirements tested by this test",
+          "items": {
+            "type": "object",
+            "properties": {
+              "req_doc": {
+                "type": "string",
+                "$comment": "description of requirement (e.g. doc#, like 'cta2088a')",
+                "$ref": "#/$defs/stringType"
+              },
+              "req_num": {
+                "type": "string",
+                "$comment": "identifier of the requirement, e.g., SA-017",
+                "$ref": "#/$defs/stringType"
+              }
+            }
+          }
+        },
+        "tester_name": {
+          "$ref": "#/$defs/stringType",
+          "type": "string"
+        },
+        "tester_org": {
+          "$ref": "#/$defs/stringType",
+          "type": "string"
+        }
+      },
+      "$ref": "x590schema.json"
+    }
+  },
+  "$defs": {
+    "saneUrl": {
+      "format": "uri",
+      "pattern": "^https?://",
+      "$comment": "maxLength should include ideas about label size & text; URLs can of course be very long",
+      "maxLength": 2048,
+      "minLength": 15
+    },
+    "stringType": {
+      "maxLength": 2048
+    },
+    "dateType": {
+      "$comment": "ISO 8601, RFC 3339, see full-date ABNF",
+      "type": "string",
+      "format": "date"
+    },
+    "iconsType": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "url": {
+          "type": "string",
+          "$ref": "#/$defs/saneUrl"
+        },
+        "text": {
+          "type": "string",
+          "$ref": "#/$defs/stringType"
+        }
+      }
+    },
+    "dateTimeType": {
+      "$comment": "ISO 8601, RFC 3339, see date-time ABNF",
+      "type": "string",
+      "format": "date-time"
+    },
+    "urlType": {
+      "type": "object",
+      "properties": {
+        "16": {
+          "$ref": "#/$defs/saneUrl",
+          "description": "url to a 16x16 icon"
+        },
+        "48": {
+          "$ref": "#/$defs/saneUrl"
+        },
+        "128": {
+          "$ref": "#/$defs/saneUrl"
+        },
+        "256": {
+          "$ref": "#/$defs/saneUrl"
+        }
+      }
+    }
+  }
+}
